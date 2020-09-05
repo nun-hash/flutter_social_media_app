@@ -55,9 +55,6 @@ if [ -n "\$(ls -A ubuntu20-binds)" ]; then
       . \$f
     done
 fi
-command+=" -b /data"
-command+=" -b /system"
-command+=" -b /storage
 command+=" -b /dev"
 command+=" -b /proc"
 command+="-b ubuntu20-fs/root:/dev/shm"
