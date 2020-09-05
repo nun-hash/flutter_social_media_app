@@ -43,6 +43,7 @@ bin=start-ubuntu20.sh
 echo "writing launch script"
 cat > $bin <<- EOM
 #!/bin/bash
+CHROOT=$@
 cd \$(dirname \$0)
 ## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
@@ -55,9 +56,15 @@ if [ -n "\$(ls -A ubuntu20-binds)" ]; then
       . \$f
     done
 fi
+command+="-r $CHROOT"
+command+=" -b /data"
+command+=" -b /system"
+command+=" -b /storage
 command+=" -b /dev"
 command+=" -b /proc"
-command+=" -b ubuntu20-fs/root:/dev/shm"
+command+="-b $CHROOT/root:/dev/shm"
+command+="-b $CHROOT/proc/version:/proc/version"
+command+="-b ubuntu20-fs/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 ## uncomment the following line to mount /sdcard directly to / 
